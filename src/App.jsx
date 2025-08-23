@@ -3,9 +3,6 @@ import { useEffect } from "react";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { ToastContainer } from "react-toastify";
-import Home from "./components/pages/home";
-import Signup from "./components/pages/signup/signup";
-import Login from "./components/pages/login/login";
 import ProductDetails from "./components/pages/productslist/productdetails";
 import Shop from "./components/pages/shop/shop";
 import About from "./components/pages/about/about";
@@ -19,6 +16,9 @@ import Products from "./components/redux/products";
 import { ProtectedRoute } from "./components/protectedroute/route";
 import Users from "./components/redux/users";
 import { Orders } from "./components/redux/orders";
+import Home from "./components/pages/home/home";
+import Signup from "./components/pages/signup/signup";
+import Login from "./components/pages/login/login";
 
 export default function App() {
   useEffect(() => {

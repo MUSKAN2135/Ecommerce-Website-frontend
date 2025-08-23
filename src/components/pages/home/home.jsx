@@ -1,13 +1,14 @@
 import { useState } from "react";
-import Footer from "./footer/footer";
-import Herosection from "./mainsections/hero";
-import Navbar from "./navbar/navbar";
+import Footer from "../footer/footer";
+import Herosection from "../mainsections/hero";
+import Navbar from "../navbar/navbar";
 import bgimg from '/slider-bg.png'
-import Newsletter from "./mainsections/news";
-import Gallery from "./mainsections/gallery";
-import Section from "./mainsections/section";
-import Allproducts from "./productslist/allproducts";
+import Newsletter from "../mainsections/news";
+import Gallery from "../mainsections/gallery";
+import Section from "../mainsections/section";
+import Allproducts from "../productslist/allproducts";
 import newsbg from "/title.background.png";
+import Crew from "../mainsections/crew";
 
 export default function Home() {
     return (
@@ -31,6 +32,7 @@ export default function Home() {
             <Section />
             <Gallery />
             <Newsletter />
+            <Crew />
             <Footer />
         </div>
     )

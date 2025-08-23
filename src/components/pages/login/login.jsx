@@ -36,7 +36,7 @@ const Login = () => {
   };
 
   return (
-    <div className="border-t-8 border-[#0097b2] min-h-screen bg-gray-50 py-8 font-playfair">
+    <>
       <button className="text-lg text-gray-600 mb-6 block">
         <Link to="/" className="hover:text-[#0097b2] transition duration-200">Home</Link> /
         <Link to="/login" className="text-[#0097b2] transition duration-200"> Login</Link>
@@ -102,7 +102,7 @@ const Login = () => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
