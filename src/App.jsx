@@ -18,6 +18,7 @@ import Admindashboard from "./components/admin panel/dashboard";
 import Products from "./components/redux/products";
 import { ProtectedRoute } from "./components/protectedroute/route";
 import Users from "./components/redux/users";
+import { Orders } from "./components/redux/orders";
 
 export default function App() {
   useEffect(() => {
@@ -39,7 +40,6 @@ export default function App() {
         <Route path="/blog" element={<Blog />} />
         <Route path="/checkout" element={<Checkout />} />
 
-        {/* <Route path="/category/:id" element={<CategoryPage />} /> */}
 
         {/* User-Only Pages */}
         <Route
@@ -47,6 +47,12 @@ export default function App() {
           element={
             <ProtectedRoute >
               <Wishlist />
+            </ProtectedRoute>} />
+              <Route
+          path="/shipping"
+          element={
+            <ProtectedRoute >
+              <Checkout />
             </ProtectedRoute>} />
         <Route
           path="/cart"
@@ -67,6 +73,12 @@ export default function App() {
           element={
             <ProtectedRoute role="Admin">
               <Products />
+            </ProtectedRoute>} />
+        <Route
+          path="/allorders"
+          element={
+            <ProtectedRoute role="Admin">
+              <Orders />
             </ProtectedRoute>} />
         <Route
           path="/dashboard"

@@ -1,22 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createProduct, deleteProduct, getAllProducts, updateProduct, } from "./productslice";
+import { createProduct, deleteProduct, getAllProducts, updateProduct } from "./productslice";
 import AdminNavbar from "../admin panel/adminbar";
-import { Link, useParams } from "react-router-dom";
 import { LuPencil } from "react-icons/lu";
-import { MdDeleteForever, MdDeleteOutline } from "react-icons/md";
+import { MdDeleteOutline } from "react-icons/md";
+import { toast } from "react-toastify";
 
 const Products = () => {
     const dispatch = useDispatch();
     const { products = [], loading } = useSelector((state) => state.products);
-    const [form, setForm] = useState({
-        Name: "",
-        description: "",
-        image: null,
-        price: "",
-        review: "",
-        category: "",
-    });
+    const [form, setForm] = useState({ Name: "", description: "", image: null, price: "", review: "", category: "" });
     const [showAddProduct, setShowAddProduct] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -26,7 +19,6 @@ const Products = () => {
 
     const handleChange = (e) => {
         if (e.target.name === "image") {
-            // file upload
             setForm({ ...form, image: e.target.files[0] });
         } else {
             setForm({ ...form, [e.target.name]: e.target.value });
@@ -36,20 +28,28 @@ const Products = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         const formData = new FormData();
+        Object.keys(form).forEach((key) => formData.append(key, form[key]));
         if (form._id) {
-            dispatch(updateProduct({ id: form._id, data: formData }));
+            dispatch(updateProduct({ id: form._id, data: formData }))
+                .unwrap()
+            try {
+                toast.success("Product updated successfully")
+            }
+            catch (err) {
+                toast.error(err.message || "Update failed")
+            }
         } else {
-            dispatch(createProduct(formData));
+            dispatch(createProduct(formData))
+                .unwrap()
+            try {
+                toast.success("Product added successfully")
+            }
+            catch {
+                toast.error(err.message || "Add failed")
+            }
         }
 
-        setForm({
-            Name: "",
-            description: "",
-            image: null,
-            price: "",
-            review: "",
-            category: "",
-        });
+        setForm({ Name: "", description: "", image: null, price: "", review: "", category: "" });
         setShowAddProduct(false);
     };
 
@@ -58,7 +58,7 @@ const Products = () => {
             _id: product._id,
             Name: product.Name || "",
             description: product.description || "",
-            image: null, // file nahi set hoti edit me
+            image: null,
             price: product.price || "",
             review: product.review || "",
             category: product.category || "",
@@ -67,58 +67,57 @@ const Products = () => {
     };
 
     const handleDelete = (id) => {
-        dispatch(deleteProduct(id));
+        if (window.confirm("Are you sure you want to delete this product?")) {
+            dispatch(deleteProduct(id)).unwrap()
+            try {
+                toast.success("Product deleted successfully")
+            }
+            catch (err) {
+                toast.error(err.message || "Delete failed")
+            }
+        }
     };
 
     return (
-        <div className="flex h-screen">
+        <div className="flex h-screen bg-gray-100">
             <AdminNavbar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
-            <div
-                className={`flex-1 m-4 sm:m-10 transition-all duration-300 ${isMenuOpen ? "sm:ml-60" : "ml-0"}`} >
-                <h1 className="text-2xl font-bold mb-6">Product Dashboard</h1>
-                <button
-                    onClick={() => {
-                        setForm({
-                            Name: "",
-                            description: "",
-                            image: null,
-                            price: "",
-                            review: "",
-                            category: "",
-                        });
-                        setShowAddProduct(true);
-                    }}
-                    className='w-40 rounded-md flex items-center justify-center p-3  bg-[#0097b2] hover:bg-[transparent] hover:border hover:border-[#0097b2] m-2'>
-                    Add Product
-                </button>
+            <div className={`flex-1 p-6 transition-all duration-300 ${isMenuOpen ? "sm:ml-60" : "ml-0"}`}>
+                <div className="flex justify-between items-center mb-6 flex-wrap gap-4">
+                    <h1 className="text-3xl font-bold text-gray-800">Product Dashboard</h1>
+                    <button
+                        onClick={() => {
+                            setForm({ Name: "", description: "", image: null, price: "", review: "", category: "" });
+                            setShowAddProduct(true);
+                        }}
+                        className="px-5 py-2 bg-[#0097b2] text-white rounded-md hover:bg-[#007a92] transition"
+                    >
+                        Add Product
+                    </button>
+                </div>
 
                 {loading ? (
-                    <p>Loading...</p>
+                    <p className="text-center text-gray-500 mt-20">Loading products...</p>
                 ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-2 sm:px-8">
                         {products.map((product) => (
-                            <div key={product._id} className="border p-4 rounded shadow">
+                            <div key={product._id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
                                 {product.image && (
-                                    <img
-                                        src={product.image}
-                                        alt={product.Name}
-                                        className="w-full h-48 object-contain mb-3"
-                                    />
+                                    <img src={`http://localhost:3000${product.image}`} alt={product.Name} className="w-full h-48 object-cover" />
                                 )}
-                                <h2 className="font-semibold text-lg">{product.Name}</h2>
-                                <p className="text-gray-600">${product.price}</p>
-                                {/* <div className="flex justify-between">
-                                    <p className="text-gray-600">{product.category}</p>
-                                    <p className="text-gray-600">{product.review} reviews</p>
-                                </div> */}
-                                <p className="text-gray-600">{product.description}</p>
-                                <div className="mt-3 flex justify-between gap-4">
-                                    <LuPencil
-                                        onClick={() => handleEdit(product)}
-                                        className="text-blue-500 cursor-pointer" />
-                                    <MdDeleteOutline
-                                        onClick={() => handleDelete(product._id)}
-                                        className="text-red-500 cursor-pointer" />
+                                <div className="p-4">
+                                    <h2 className="text-lg font-semibold text-gray-800">{product.Name}</h2>
+                                    <p className="text-gray-600 font-medium mt-1">${product.price}</p>
+                                    <p className="text-gray-500 mt-2 line-clamp-3">{product.description}</p>
+                                    <div className="flex justify-end gap-3 mt-4">
+                                        <LuPencil
+                                            onClick={() => handleEdit(product)}
+                                            className="text-blue-600 cursor-pointer hover:text-blue-800"
+                                        />
+                                        <MdDeleteOutline
+                                            onClick={() => handleDelete(product._id)}
+                                            className="text-red-600 cursor-pointer hover:text-red-800"
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         ))}
@@ -126,66 +125,25 @@ const Products = () => {
                 )}
 
                 {showAddProduct && (
-                    <div className="fixed inset-0 bg-opacity-40 flex items-center justify-center z-50">
-                        <div className="bg-white p-6 rounded shadow-lg w-[90%] max-w-md">
-                            <h2 className="text-xl font-bold mb-4">
-                                {form._id ? "Edit Product" : "Add Product"}
-                            </h2>
+                    <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
+                        <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
+                            <h2 className="text-xl font-bold mb-4">{form._id ? "Edit Product" : "Add Product"}</h2>
                             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                                <input
-                                    type="text"
-                                    name="Name"
-                                    placeholder="Name"
-                                    value={form.Name}
-                                    onChange={handleChange}
-                                    className="border px-3 py-2 rounded"
-                                    required
-                                />
-                                <input
-                                    type="number"
-                                    name="price"
-                                    placeholder="Price"
-                                    value={form.price}
-                                    onChange={handleChange}
-                                    className="border px-3 py-2 rounded"
-                                    required />
-                                <input
-                                    type="file"
-                                    name="image"
-                                    onChange={handleChange}
-                                    className="border px-3 py-2 rounded"
-                                    accept="image/*" />
-                                <input
-                                    type="text"
-                                    name="category"
-                                    placeholder="Category"
-                                    value={form.category}
-                                    onChange={handleChange}
-                                    className="border px-3 py-2 rounded" />
-                                <textarea
-                                    name="description"
-                                    placeholder="Description"
-                                    value={form.description}
-                                    onChange={handleChange}
-                                    className="border px-3 py-2 rounded" />
-                                <div className="flex justify-end gap-4 mt-4">
-                                    <button
-                                        type="button"
-                                        onClick={() => setShowAddProduct(false)}
-                                        className='w-40 rounded-md flex items-center justify-center p-3  bg-gray-300 hover:bg-gray-200 hover:border hover:border-[#0097b2] m-2'>                                        Cancel
-                                    </button>
-                                    <button
-                                        type="submit"
-                                        className='w-40 rounded-md flex items-center justify-center p-3  bg-[#0097b2] hover:bg-[transparent] hover:border hover:border-[#0097b2] m-2'>
-                                        {form._id ? "Update" : "Add"}
-                                    </button>
+                                <input type="text" name="Name" placeholder="Name" value={form.Name} onChange={handleChange} className="border px-3 py-2 rounded" required />
+                                <input type="number" name="price" placeholder="Price" value={form.price} onChange={handleChange} className="border px-3 py-2 rounded" required />
+                                <input type="file" name="image" onChange={handleChange} className="border px-3 py-2 rounded" accept="image/*" />
+                                <input type="text" name="category" placeholder="Category" value={form.category} onChange={handleChange} className="border px-3 py-2 rounded" />
+                                <textarea name="description" placeholder="Description" value={form.description} onChange={handleChange} className="border px-3 py-2 rounded" />
+                                <div className="flex justify-end gap-3 mt-4">
+                                    <button type="button" onClick={() => setShowAddProduct(false)} className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-200 transition">Cancel</button>
+                                    <button type="submit" className="px-4 py-2 bg-[#0097b2] text-white rounded hover:bg-[#007a92] transition">{form._id ? "Update" : "Add"}</button>
                                 </div>
                             </form>
                         </div>
                     </div>
                 )}
             </div>
-        </div >
+        </div>
     );
 };
 

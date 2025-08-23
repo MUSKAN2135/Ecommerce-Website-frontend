@@ -18,11 +18,22 @@ export const loginUser = createAsyncThunk("users/login", async (data) => {
   return res.data
 });
 
-export const getAllusers = createAsyncThunk("users/getAll", async () => {
-  const res = await axios.get(`${API_URL}/allusers`);
-  return res.data;
-});
-
+export const getAllusers = createAsyncThunk(
+  "users/getAll",
+  async (_, { getState, rejectWithValue }) => {
+    try {
+      const { token } = getState().users; // Redux state se token le lo
+      const res = await axios.get(`${API_URL}/allusers`, {
+        headers: {
+          Authorization: `Bearer ${token}` // 👈 token pass karo
+        },
+      });
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data || error.message);
+    }
+  }
+);
 export const getuserById = createAsyncThunk("users/getById", async (id) => {
   const res = await axios.get(`${API_URL}/user/${id}`);
   return res.data;
@@ -46,8 +57,8 @@ const userSlice = createSlice({
   initialState: {
     users: [],
     selecteduser: null,
-    currentUser: null,
-    token: localStorage.getItem("token"),
+    currentUser: JSON.parse(localStorage.getItem("currentUser")) || null, // 👈 persistent login
+    token: localStorage.getItem("token") || null,
     loading: false,
     error: null,
     success: false
@@ -57,6 +68,7 @@ const userSlice = createSlice({
       state.currentUser = null;
       state.token = null;
       localStorage.removeItem("token");
+      localStorage.removeItem("currentUser"); // 👈 remove user on logout
       state.success = false;
     },
     clearError: (state) => {
@@ -90,6 +102,7 @@ const userSlice = createSlice({
         state.currentUser = action.payload.user;
         state.token = action.payload.token;
         localStorage.setItem("token", action.payload.token);
+        localStorage.setItem("currentUser", JSON.stringify(action.payload.user)); // 👈 save user to localStorage
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
