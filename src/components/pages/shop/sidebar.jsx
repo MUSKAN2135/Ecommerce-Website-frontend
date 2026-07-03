@@ -35,7 +35,6 @@ export default function Sidebar({ setFilteredProducts }) {
   return (
     <div className="w-full h-full bg-cyan-950 text-white p-4 sm:p-6 shadow-lg rounded-md">
       <h2 className="text-xl font-semibold mb-6">Filters</h2>
-
       {/* Categories */}
       <div className="mb-6">
         <h3 className="text-lg font-medium mb-3">Categories</h3>

@@ -9,7 +9,6 @@ import { LuPencil } from "react-icons/lu";
 const Users = () => {
     const dispatch = useDispatch();
     const { users = [], loading } = useSelector((state) => state.users);
-
     const [form, setForm] = useState({
         UserName: "",
         Email: "",
@@ -78,8 +77,7 @@ const Users = () => {
             <AdminNavbar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
             <div
                 className={`flex-1 mt-20 px-2 sm:px-4 transition-all duration-300 ${isMenuOpen ? "lg:ml-60" : "ml-0"
-                    }`}
-            >
+                    }`} >
                 {/* Header */}
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
                     <h1 className="text-xl sm:text-2xl font-bold">All Users</h1>

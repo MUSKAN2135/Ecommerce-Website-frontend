@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Navbar from "../navbar/navbar";
 import Footer from "../footer/footer";
-import {
-  deleteWishlist,
-  getAllWishlists,
-  removeProductFromWishlist,
-} from "../../redux/wishlistslice";
+import { deleteWishlist, getAllWishlists, removeProductFromWishlist } from "../../redux/wishlistslice";
 import { RxCross2 } from "react-icons/rx";
 import { createAddToCart, getAllCarts } from "../../redux/addtocartslice";
 import { toast } from "react-toastify";
+import shopbg from "/banner.png";
+import Section from "../mainsections/section";
+import Newsletter from "../mainsections/news";
+
 
 const Wishlist = () => {
   const dispatch = useDispatch();
@@ -64,8 +64,10 @@ const Wishlist = () => {
   return (
     <>
       <Navbar />
-      <div className="mt-44 text-center text-gray-600">
-        <h2 className="text-2xl font-bold m-6">My Wishlist</h2>
+      <div style={{ backgroundImage: `url(${shopbg})`, backgroundPosition: "bottom", backgroundSize: "cover", height: "60vh", backgroundRepeat: "no-repeat", }} className="flex items-center justify-center">
+        <h1 className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg">
+          My Wishlist
+        </h1>
       </div>
       <div className="mx-auto p-6 min-h-[80vh]">
         {loading ? (
@@ -73,7 +75,7 @@ const Wishlist = () => {
         ) : error ? (
           <p className="text-center text-red-500 mt-10">Error: {error}</p>
         ) : token && wishlists?.length > 0 ? (
-          <>
+          <div>
             <table className="w-full mb-6">
               <tbody>
                 {wishlists?.map((item) =>
@@ -115,23 +117,25 @@ const Wishlist = () => {
                 )}
               </tbody>
             </table>
-
-            <div className="text-center mt-6">
-              <button
-                onClick={handleClearWishlist}
-                className="bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700">
-                Clear Wishlist
-              </button>
-            </div>
-          </>
+            {wishlists.length > 0 && (
+              <div className="text-center mt-6">
+                <button
+                  onClick={handleClearWishlist}
+                  className="bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700">
+                  Clear Wishlist
+                </button>
+              </div>
+            )}
+          </div>
         ) : (
           <p className="text-center text-gray-600 mt-10">
-            {token || wishlists.items.length === 0 
-              ? "Your wishlist is empty."
+            {token ? "Your wishlist is empty."
               : "Please login to view your wishlist."}
           </p>
         )}
       </div>
+      <Section/>
+      <Newsletter/>
       <Footer />
     </>
   );

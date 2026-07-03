@@ -19,7 +19,7 @@ export default function Footer() {
     ];
 
     return (
-        <div className='w-auto' style={{ backgroundImage: `url(${footbg})`, backgroundRepeat:"no-repeat", backgroundSize:"cover", width: "100%" }}>
+        <div style={{ backgroundImage: `url(${footbg})`, backgroundRepeat:"no-repeat", backgroundSize: "cover"}}>
             <div className="text-white md:flex items-center sm:flex-wrap md:justify-center leading-10 md:px-0 py-12 pb-10">
                 <div className="py-5 md:px-0 lg:w-70 md:w-100 md:mx-0 mx-3">
                     <div className="logo">

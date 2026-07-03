@@ -95,7 +95,6 @@ export default function ProductDetails() {
                 }}>
                 <h1 className="text-3xl font-bold text-center text-white z-10 mb-10">Product Details</h1>
             </div>
-
             <div className="max-w-5xl mx-auto bg-white rounded-2xl p-8 grid grid-cols-1 md:grid-cols-2 gap-10 my-12">
                 {/* Left Side - Product Image */}
                 <div className="flex justify-center items-center w-full ">
@@ -135,7 +134,6 @@ export default function ProductDetails() {
                     </div>
                 </div>
             </div>
-
             <Footer />
         </>
     );

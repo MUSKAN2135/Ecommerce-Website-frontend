@@ -2,6 +2,9 @@ import React from "react";
 import Navbar from "../navbar/navbar";
 import Footer from "../footer/footer";
 import aboutbg from '/banner.png'
+import { Link } from "react-router-dom";
+import Section from "../mainsections/section";
+import Newsletter from "../mainsections/news";
 
 const About = () => {
     return (
@@ -46,6 +49,8 @@ const About = () => {
                     </div>
                 </div>
             </div>
+            <Section />
+            <Newsletter />
             <Footer />
         </>
     );

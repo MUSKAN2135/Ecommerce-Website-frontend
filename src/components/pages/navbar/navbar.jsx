@@ -6,14 +6,16 @@ import { TfiShoppingCart } from 'react-icons/tfi'
 import { IoIosSearch } from 'react-icons/io'
 import { Link, useNavigate } from 'react-router-dom'
 import { FaRegHeart, FaUser, FaUserCircle } from 'react-icons/fa'
-import { logout } from '../../redux/userslice'  // <--- import logout action
+import { logout } from '../../redux/userslice'
 
 export default function Navbar() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { currentUser, token } = useSelector((state) => state.users)
-  const searchQuery = useSelector((state) => state.products.searchQuery)  
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  // for scroll
+  const [scrolled, setScrolled] = useState(false)
+
   const navlinks = [
     { name: "Home", path: "/" },
     { name: "Shop", path: "/shop" },
@@ -23,7 +25,6 @@ export default function Navbar() {
   ]
 
   const [dropdownStates, setDropdownStates] = useState({
-    shop: false,
     user: false,
   })
 
@@ -38,16 +39,28 @@ export default function Navbar() {
 
   const handleLogout = () => {
     dispatch(logout())
-    navigate('/') 
+    navigate('/')
   }
 
+  // Scroll Effect
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setScrolled(true)
+      } else {
+        setScrolled(false)
+      }
+    }
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
   return (
-    <div className='flex flex-col justify-center fixed top-0 left-0 z-10 w-full'>
-      <div className="bg-cyan-950 flex px-6 py-2 lg:justify-around justify-between items-center text-white">
+    <div className='flex flex-col justify-center fixed top-0 left-0 z-10 right-0'>
+      <div className={`${scrolled ? "bg-cyan-950" : "bg-transparent"} flex px-6 py-2 lg:justify-around justify-between items-center text-white transition duration-300`}>
         <div className="logo">
           <h2 className='md:text-3xl sm:text-xl text-lg font-[Mono] text-yellow-600'>TrendyMart</h2>
         </div>
-
         <div className='lg:hidden block' onClick={toggleMenu}>
           {isMenuOpen ?
             <RxCross2 className='font-bold cursor-pointer transition duration-150 ease-in-out text-xl ' />
@@ -55,12 +68,12 @@ export default function Navbar() {
             <LiaBarsSolid className='cursor-pointer transition duration-150 ease-in-out text-xl ' />
           }
         </div>
-
         <div className='lg:flex hidden items-center md:mr-3 mr-0'>
           <IoIosSearch className='mr-[-30px] cursor-pointer text-gray-500 transition duration-150 ease-in-out text-xl ' />
           <input placeholder='Search over here' className='lg:w-100 md:w-70 text-gray-500 outline-none border py-2 pl-10 rounded-md ' />
         </div>
 
+        {/* topbar */}
         <div className="icons flex items-center md:py-3 lg:flex hidden">
           <Link to="/wishlist"> <FaRegHeart className='m-2 cursor-pointer hover:text-yellow-600 transition duration-150 ease-in-out ' /></Link>
           <Link to="/cart"> <TfiShoppingCart className='m-2 cursor-pointer hover:text-yellow-600 transition duration-150 ease-in-out ' /></Link>
@@ -97,9 +110,9 @@ export default function Navbar() {
           </div>
         </div>
       </div>
-
+      {/* 2nd navbar */}
       <hr className='text-yellow-600' />
-      <div className="topbar py-2 bg-cyan-950 flex lg:justify-around justify-between items-center text-white">
+      <div className={`${scrolled ? "bg-cyan-950" : "bg-transparent"} topbar py-2 flex lg:justify-around justify-between items-center text-white transition duration-300`}>
         <div className='flex pt-3 lg:block hidden'>
           {navlinks.map((link, index) => (
             <Link key={index} to={link.path} className='mx-10 mb-2 hover:text-[#0097b2] cursor-pointer transition duration-150 ease-in-out'>
@@ -109,6 +122,7 @@ export default function Navbar() {
         </div>
       </div>
 
+      {/* menu bar */}
       {isMenuOpen &&
         <div className="nav-link bg-cyan-900/40 text-white py-5 shadow-lg transition duration-150">
           <div className='flex items-center justify-center md:mr-3 mr-0'>

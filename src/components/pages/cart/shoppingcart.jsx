@@ -8,6 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Footer from "../footer/footer";
 import Navbar from "../navbar/navbar";
 import shopbg from '/banner.png';
+import Section from "../mainsections/section";
 
 export default function Shoppingcart() {
   const dispatch = useDispatch();
@@ -49,7 +50,7 @@ export default function Shoppingcart() {
     try {
       await dispatch(updateCartQuantity({ cartId: cart._id, productId, quantity })).unwrap();
       toast.success("Quantity updated");
-      dispatch(getAllCarts());
+      await dispatch(getAllCarts()); // ✅ fresh cart reload
     } catch (error) {
       toast.error(error || "Could not update quantity");
     } finally {
@@ -60,6 +61,7 @@ export default function Shoppingcart() {
   const handleDeleteProduct = async (productId) => {
     try {
       await dispatch(deleteCartItem({ cartId: cart._id, productId })).unwrap();
+      await dispatch(getAllCarts()); // ✅ fresh cart reload
       toast.success("Product removed from cart");
     } catch (error) {
       toast.error(error || "Could not remove product");
@@ -73,6 +75,7 @@ export default function Shoppingcart() {
         if (item?.product?._id)
           await dispatch(deleteCartItem({ cartId: cart._id, productId: item.product._id })).unwrap();
       }
+      await dispatch(getAllCarts()); // ✅ fresh cart reload
       toast.success("Cart cleared");
     } catch (error) {
       toast.error(error || "Could not clear cart");
@@ -120,7 +123,7 @@ export default function Shoppingcart() {
                   <div key={`${item.product._id}-${index}`} className="flex items-center justify-between p-4 bg-white shadow rounded">
                     <div className="flex items-center gap-4">
                       <img
-                        src={`http://localhost:3000/${item.product.image}`}
+                        src={`http://localhost:3000${item.product.image}`}
                         alt={item.product.Name}
                         className="h-20 w-20 object-contain"
                       />
@@ -143,14 +146,12 @@ export default function Shoppingcart() {
                       <button
                         onClick={() => handleQuantityUpdate(item.product._id)}
                         className="bg-[#0097b2] text-white px-3 py-1 rounded hover:bg-[#007f94] disabled:opacity-50"
-                        disabled={updating[item.product._id]}
-                      >
+                        disabled={updating[item.product._id]} >
                         {updating[item.product._id] ? "Updating..." : "Update"}
                       </button>
                       <button
                         onClick={() => handleDeleteProduct(item.product._id)}
-                        className="text-gray-600 hover:text-red-700 p-2"
-                      >
+                        className="text-gray-600 hover:text-red-700 p-2" >
                         <FaTrash />
                       </button>
                     </div>
@@ -158,7 +159,7 @@ export default function Shoppingcart() {
                 )
               ))}
             </div>
-            {/* Only show Clear Cart & Checkout if there are items */}
+
             <div className="mt-6 flex flex-col md:flex-row justify-between items-center gap-4">
               <div className="text-lg font-semibold">
                 Total: <span className="text-green-600">${totalPrice.toFixed(2)}</span>
@@ -187,6 +188,7 @@ export default function Shoppingcart() {
           </p>
         )}
       </div>
+      <Section/>
       <Footer />
     </>
   );

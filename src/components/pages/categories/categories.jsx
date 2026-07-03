@@ -70,7 +70,6 @@ export default function CategoryPage() {
   return (
     <>
       <Navbar />
-
       {/* Category Header */}
       <div className="py-10 px-4 bg-gray-100 text-center">
         <h1 className="text-3xl font-bold">{name}</h1>
@@ -115,7 +114,6 @@ export default function CategoryPage() {
           <p className="text-center text-gray-500 col-span-full">No products in this category</p>
         )}
       </div>
-
       <Footer />
     </>
   );

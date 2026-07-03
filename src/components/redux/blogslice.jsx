@@ -15,7 +15,7 @@ export const getblogById = createAsyncThunk("blog/getById", async (id) => {
 });
 
 export const createblog = createAsyncThunk("blog/create", async (data) => {
-  const res = await axios.post(`${API_URL}/blog`, data);
+  const res = await axios.post(`${API_URL}/create-blog`, data);
   return res.data;
 });
 

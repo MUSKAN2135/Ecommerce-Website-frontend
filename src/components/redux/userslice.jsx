@@ -41,7 +41,7 @@ export const getAllusers = createAsyncThunk(
       const res = await axios.get(`${API_URL}/allusers`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      return res.data;
+      return res.data; 
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || "Fetching users failed");
     }

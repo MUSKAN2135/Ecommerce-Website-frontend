@@ -1,7 +1,7 @@
-// src/components/Allproducts.jsx
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import newsbg from "/title.background.png";
 import { getAllProducts } from "../../redux/productslice";
 
 export default function Allproducts({ display = 4 }) {
@@ -25,22 +25,44 @@ export default function Allproducts({ display = 4 }) {
   if (error) return <p className="text-center text-red-500">{error}</p>;
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      {randomProducts.map((p) => (
-        <div key={p._id} className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 p-4 flex flex-col">
-          <div className="h-full w-full flex justify-center items-center mb-2">
-            <img
-              src={`http://localhost:3000${p.image}`} // backend URL
-              alt={p.Name}
-              className="h-60 w-80"
-            />
+    <div className="m-7">
+      <div className="h-24 w-full flex items-center justify-center" style={{ backgroundImage: `url(${newsbg})`, backgroundRepeat: "no-repeat", backgroundPosition: "center" }}>
+        <h2 className="text-white text-xl md:text-2xl font-semibold drop-shadow-lg z-[3]"  data-aos="zoom-out" data-aos-duration="1500">
+          Shop Featured Products
+        </h2>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-3 lg:px-22 py-8 md:px-0 px-4">
+        {randomProducts.map((p) => (
+          <div
+            key={p._id}
+            className="bg-white rounded-2xl shadow-md hover:shadow-lg transition duration-300 flex flex-col overflow-hidden">
+            {/* Product Image */}
+            <div className="relative w-full h-56">
+              <img
+                src={`http://localhost:3000${p.image}`}
+                alt={p.Name}
+                className="w-full h-full object-cover rounded-t-2xl"
+              />
+            </div>
+            {/* Content */}
+            <div className="flex flex-col flex-grow p-4">
+              <Link to={`/productdetail/${p._id}`}>
+                <h2 className="text-base sm:text-lg font-semibold text-gray-800 hover:text-[#0097b2] line-clamp-2">
+                  {p.Name}
+                </h2>
+              </Link>
+              {/* Price */}
+              <p className="text-green-600 text-lg font-bold mt-2">
+                ${p.price}
+              </p>
+              <p className="text-xs sm:text-sm text-gray-500 capitalize mt-1">
+                {p.category?.name}
+              </p>
+            </div>
           </div>
-          <Link to={`/productdetail/${p._id}`}>
-            <h2 className="text-lg font-semibold text-gray-800 hover:text-blue-600 line-clamp-2">{p.Name}</h2>
-          </Link>
-          <p className="text-green-600 text-lg font-bold mt-2">${p.price}</p>
-        </div>
-      ))}
+        ))}
+      </div>
+
     </div>
   );
 }

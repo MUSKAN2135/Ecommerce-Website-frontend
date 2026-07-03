@@ -13,8 +13,8 @@ const images = [
 
 export default function Gallery() {
   return (
-    <div className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-12 py-14">
-      {/* Heading with Leaf */}
+    <div className="container mx-auto py-14 lg:px-44 px-10">
+      {/* Heading */}
       <div className="relative flex items-center justify-center mb-12 z-[-3]">
         <img
           src={leafbg}
@@ -23,45 +23,61 @@ export default function Gallery() {
         />
         <div
           className="h-24 md:h-28 w-full flex items-center justify-center relative"
-          style={{ backgroundImage: `url(${newsbg})`, backgroundRepeat: "no-repeat", backgroundPosition: "center" }}>
-          <h2 className="text-white text-2xl sm:text-2xl md:text-3xl font-semibold drop-shadow-lg z-[3]">
+          style={{
+            backgroundImage: `url(${newsbg})`,
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center",
+          }}>
+          <h2 className="text-white text-2xl sm:text-2xl md:text-3xl font-semibold drop-shadow-lg z-[3]" data-aos="zoom-out" data-aos-duration="1500">
             Gallery
           </h2>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <div className="space-y-4">
+
+      {/* Grid Gallery */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:h-[500px] h-auto">
+        {/* Left column */}
+        <div className="flex flex-col gap-2">
           <img
             src={images[0]}
             alt="Left Top"
-            className="w-full h-48 sm:h-56 md:h-60 lg:h-64 object-cover rounded-2xl shadow-md hover:scale-105 transition-transform duration-300"
+            className="w-full md:h-48 h-auto md:object-cover object-contain rounded-2xl hover:scale-105 transition-transform duration-300"
+            data-aos="fade-right" data-aos-duration="3000"
           />
           <img
             src={images[1]}
             alt="Left Bottom"
-            className="w-full h-64 sm:h-72 md:h-80 lg:h-96 object-cover rounded-2xl shadow-md hover:scale-105 transition-transform duration-300"
+            className="w-full md:h-64 h-auto md:object-cover object-contain rounded-2xl hover:scale-105 transition-transform duration-300"
+            data-aos="zoom-in-right" data-aos-duration="3000"
           />
         </div>
-        <div className="space-y-4 md:row-span-2">
+
+        {/* Center big image*/}
+        <div data-aos="zoom-in" data-aos-duration="2000">
           <img
             src={images[2]}
             alt="Center"
-            className="w-full h-64 sm:h-72 md:h-full lg:h-full object-cover rounded-2xl shadow-lg hover:scale-105 transition-transform duration-300"
+            className="w-full md:h-[470px] h-auto md:object-cover object-contain rounded-2xl hover:scale-105 transition-transform duration-300"
           />
         </div>
-        <div className="space-y-4">
+
+        {/* Right column */}
+        <div className="flex flex-col gap-2">
           <img
             src={images[3]}
             alt="Right Top"
-            className="w-full h-64 sm:h-72 md:h-80 lg:h-96 object-cover rounded-2xl shadow-md hover:scale-105 transition-transform duration-300"
+            className="w-full md:h-64 h-auto md:object-cover object-contain rounded-2xl hover:scale-105 transition-transform duration-300"
+            data-aos="fade-left" data-aos-duration="3000"
           />
           <img
             src={images[4]}
             alt="Right Bottom"
-            className="w-full h-48 sm:h-56 md:h-60 lg:h-64 object-cover rounded-2xl shadow-md hover:scale-105 transition-transform duration-300"
+            className="w-full md:h-48 h-auto md:object-cover object-contain rounded-2xl hover:scale-105 transition-transform duration-300"
+            data-aos="zoom-in-left" data-aos-duration="3000"
           />
         </div>
       </div>
     </div>
   );
 }
+

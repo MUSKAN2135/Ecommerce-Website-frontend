@@ -92,18 +92,40 @@ export default function ShopProducts() {
   if (productError) return <p className="text-center text-red-500">{productError}</p>;
 
   return (
-    <div className="flex-1 px-3">
+    <div className="flex-1 ">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {displayedProducts.map(p => (
-          <div key={p._id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition duration-300 flex flex-col">
-            <div className="w-full h-full px-2 pt-2">
-              <img src={`http://localhost:3000${p.image}`} alt={p.Name} className="h-60 w-full rounded-md object-cover" />
+        {displayedProducts.map((p) => (
+          <div
+            key={p._id}
+            className="bg-white rounded-2xl shadow-md hover:shadow-lg transition duration-300 flex flex-col overflow-hidden">
+            {/* Product Image */}
+            <div className="relative w-full h-56">
+              <img
+                src={`http://localhost:3000${p.image}`}
+                alt={p.Name}
+                className="w-full h-full object-cover rounded-t-2xl"/>
+              {/* Wishlist Heart */}
+              <button
+                className={`absolute top-2 right-2 p-2 rounded-full bg-white shadow-md hover:bg-gray-100 transition ${!token ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                onClick={() => toggleWishlist(p._id)}>
+                {wishlists[0]?.items?.some((w) => w.product._id === p._id) ? (
+                  <FaHeart className="text-red-500" />
+                ) : (
+                  <FaRegHeart />
+                )}
+              </button>
             </div>
-            <div className="flex flex-col flex-grow p-3">
+
+            {/* Content */}
+            <div className="flex flex-col flex-grow p-4">
               <Link to={`/productdetail/${p._id}`}>
-                <h2 className="text-base sm:text-lg font-semibold text-gray-800 hover:text-[#0097b2] line-clamp-2">{p.Name}</h2>
+                <h2 className="text-base sm:text-lg font-semibold text-gray-800 hover:text-[#0097b2] line-clamp-2">
+                  {p.Name}
+                </h2>
               </Link>
 
+              {/* Ratings */}
               <div className="flex items-center mt-2">
                 <div className="flex">{renderStars(p.review?.rating || 0, p._id)}</div>
                 <p className="ml-2 text-xs sm:text-sm text-gray-600 truncate">
@@ -111,27 +133,26 @@ export default function ShopProducts() {
                 </p>
               </div>
 
-              <p className="text-green-600 text-sm sm:text-lg font-bold mt-2">${p.price}</p>
-              <p className="text-xs sm:text-sm text-gray-500 capitalize mt-1">{p.category?.name || "No Category"}</p>
+              {/* Price */}
+              <p className="text-green-600 text-lg font-bold mt-2">
+                ${p.price}
+              </p>
+              <p className="text-xs sm:text-sm text-gray-500 capitalize mt-1">
+                {p.category?.name || "No Category"}
+              </p>
 
-              <div className="flex items-center justify-between mt-auto pt-4">
-                <button
-                  className="bg-[#0097b2] cursor-pointer flex-1 text-white px-3 sm:px-4 py-2 rounded-lg text-sm sm:text-base hover:bg-[#007f94] disabled:opacity-50"
-                  onClick={() => addToCart(p._id)}
-                  disabled={updatingCart[p._id]}>
-                  {updatingCart[p._id] ? "Adding..." : "Add to Cart"}
-                </button>
-                <button
-                  className={`ml-3 p-2 cursor-pointer text-lg sm:text-xl rounded-full hover:bg-gray-100 transition ${!token ? "opacity-50 cursor-not-allowed" : ""}`}
-                  onClick={() => toggleWishlist(p._id)}>
-                  {wishlists[0]?.items?.some((w) => w.product._id === p._id) ? <FaHeart className="text-red-500" /> : <FaRegHeart />}
-                </button>
-              </div>
+              {/* Add to Cart */}
+              <button
+                className="mt-4 bg-[#0097b2] cursor-pointer w-full text-white px-4 py-2 rounded-b-2xl text-sm sm:text-base hover:bg-[#007f94] disabled:opacity-50"
+                onClick={() => addToCart(p._id)}
+                disabled={updatingCart[p._id]}
+              >
+                {updatingCart[p._id] ? "Adding..." : "Add to Cart"}
+              </button>
             </div>
           </div>
         ))}
       </div>
-
       {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex justify-center items-center mt-10 gap-2 flex-wrap">

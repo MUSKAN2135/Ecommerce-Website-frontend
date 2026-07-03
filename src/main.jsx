@@ -13,7 +13,7 @@ import { store } from './components/store/store.jsx';
 createRoot(document.getElementById('root')).render(
   <Provider store={store}>
     <StrictMode>
-      <BrowserRouter>
+      <BrowserRouter> 
         <ToastContainer />
         <App />
       </BrowserRouter>

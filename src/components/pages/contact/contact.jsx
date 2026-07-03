@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { sendContactMessage, clearError, resetSuccess } from "../../redux/userslice";
 import { toast } from "react-toastify";
+import Section from "../mainsections/section";
+import Newsletter from "../mainsections/news";
 
 const Contact = () => {
     const dispatch = useDispatch();
@@ -51,11 +53,9 @@ const Contact = () => {
                         backgroundRepeat: "no-repeat",
                         height: "60vh",
                     }}
-                    className="flex items-center justify-center"
-                >
+                    className="flex items-center justify-center" >
                     <h2 className="text-4xl font-bold text-white">CONTACT</h2>
                 </div>
-
                 <button className="text-lg text-gray-600 m-6 block">
                     <Link to="/" className="hover:text-[#0097b2] transition duration-200">
                         Home
@@ -67,7 +67,7 @@ const Contact = () => {
                 </button>
 
                 {/* Contact Form & Map */}
-                <div className="max-w-6xl mx-auto py-33 px-6 grid md:grid-cols-2 gap-10">
+                <div className="max-w-6xl mx-auto py-13 px-6 grid md:grid-cols-2 gap-10">
                     {/* Form */}
                     <div>
                         <h3 className="text-2xl font-semibold mb-4 text-gray-800">Send Us a Message</h3>
@@ -121,6 +121,8 @@ const Contact = () => {
                     </div>
                 </div>
             </div>
+            <Section />
+            <Newsletter />
             <Footer />
         </>
     );

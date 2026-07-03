@@ -5,7 +5,7 @@ export default function Newsletter() {
     return (
         <div className='mb-24'>
                 <div className="h-30 flex items-center justify-center" style={{ backgroundImage: `url(${newsbg})`, backgroundRepeat: "no-repeat", backgroundPosition: "center", }}>
-                    <h2 className="text-white text-xl font-bold drop-shadow-lg"  data-aos="zoom-out-down" data-aos-duration="1500">
+                    <h2 className="text-white text-xl font-bold drop-shadow-lg"  data-aos="zoom-out" data-aos-duration="1500">
                         Newsletter
                     </h2>
                 </div>

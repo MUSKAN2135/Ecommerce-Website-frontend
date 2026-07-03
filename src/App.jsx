@@ -37,10 +37,13 @@ export default function App() {
         <Route path="/shop" element={<Shop />} />
         <Route path="/aboutUs" element={<About />} />
         <Route path="/contactUs" element={<Contact />} />
-        <Route path="/blog" element={<Blog />} />
+        <Route
+          path="/blog" role= "Admin"
+          element={
+            <ProtectedRoute >
+              <Blog />
+            </ProtectedRoute>} />
         <Route path="/checkout" element={<Checkout />} />
-
-
         {/* User-Only Pages */}
         <Route
           path="/wishlist"
@@ -48,7 +51,7 @@ export default function App() {
             <ProtectedRoute >
               <Wishlist />
             </ProtectedRoute>} />
-              <Route
+        <Route
           path="/shipping"
           element={
             <ProtectedRoute >
@@ -65,7 +68,7 @@ export default function App() {
         <Route
           path="/allusers"
           element={
-            <ProtectedRoute role="Admin">
+            <ProtectedRoute role="Admin" >
               <Users />
             </ProtectedRoute>} />
         <Route
